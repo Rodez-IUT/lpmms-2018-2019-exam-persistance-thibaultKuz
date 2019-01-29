@@ -37,6 +37,40 @@ Il est strictement interdit de modifier le code contenu dans les classes de test
 
 Récupérez le contenu du fichier ENONCE.md disponible à l'URL fourni par votre enseignant et insérez le à la suite de ce fichier 
 
+Introduction
+Récupérez le contenu du fichier "ZEvaluationLPMMSTest.java" disponible à l'adresse suivante et insérez le dans votre fichier "ZEvaluationLPMMSTest.java". Étudiez le code de la classe "ZEvaluationLPMMSTest". Votre travail consistera à faire en sorte que tous les tests commentés de cette classe passent en plus de tous les autres.
 
+Partie 1 - Gestion améliorée de la sauvegarde des objets métiers (7 points)
+Cette partie vise à évaluer votre capacité à faire un bon usage de la méthode "EntityManager.merge(...)".
+
+Décommentez le test "testSaveDetachedEnterprise" et modifiez le code principal de votre application pour faire en sorte que le test "testSaveDetachedEnterprise" passe. Vérifiez que l'ensemble des tests passent toujours. Si ce n'est pas le cas, modifiez votre code jusqu'à obtenir l'ensemble des tests au vert.
+
+La méthode "EnterpriseProjectService.save(Project project)" contient l'instruction "entityManager.flush()". En étudiant la documentation de l'API JPA, décrivez quelle garantie apporte cette instruction pour le bon fonctionnement de la méthode.
+
+
+L'instruction "entityManager.flush()" garantie que le persistence contexte actuel se synchronize bien avec la base de données, donc que l'on enregistre bien les changements effectués.
+
+
+Décommentez le test "testSaveDetachedProject" et modifiez le code principal de votre application pour faire en sorte que le test "testSaveDetachedProject" passe. Vérifiez que l'ensemble des tests passent toujours. Si ce n'est pas le cas, modifiez votre code jusqu'à obtenir l'ensemble des tests au vert.
+
+Partie 2. Gestion du changement d'entreprise d'un projet (6 points)
+Décommentez le test "testSaveOfProjectAfterEnterpriseSwitch" et modifiez le code principal de votre application pour faire en sorte que le test "testSaveOfProjectAfterEnterpriseSwitch" passe. Vérifiez que l'ensemble des tests passent toujours. Si ce n'est pas le cas, modifiez votre code jusqu'à obtenir l'ensemble des tests au vert.
+
+Le test "testSaveOfProjectAfterEnterpriseSwitch" contient l'assertion suivante : "assertThat(savedProject, is(project))". Que pouvez vous en déduire sur le comportement de la méthode "merge" ?
+
+On peut en déduire que merge crée une copie du project et que donc on vérifie que la copie soit conforme à l'original. On en déduit donc aussi que merge ne synchronize pas le persistence contexte avec la base de données.
+
+Partie 3. Optimistic locking (7 points)
+Étudiez la documentation de l'annotation "jaxa.persistence.Version" de l'API JPA.
+
+Décommentez le test "testProjectsAreVersionned" et modifiez le code principal de votre application pour faire en sorte que le test "testProjectsAreVersionned" passe. Vérifiez que l'ensemble des tests passent toujours. Si ce n'est pas le cas, modifiez votre code jusqu'à obtenir l'ensemble des tests au vert.
+
+Décommentez le test "testOptimisticLockingOnConcurrentProjectModification" et modifiez, si nécessaire, le code principal de votre application pour faire en sorte que le test "testOptimisticLockingOnConcurrentProjectModification" passe. Vérifiez que l'ensemble des tests passent toujours. Si ce n'est pas le cas, modifiez votre code jusqu'à obtenir l'ensemble des tests au vert.
+
+Expliquez clairement, en français, ce qui se passe dans le test "testOptimisticLockingOnConcurrentProjectModification".
+
+Dans la class de test "testOptimisticLockingOnConcurrentProjectModification" on test si l'on reçoit bien l'erreur OptimisticLockException en cas de modification concurrente d'une donnée en base 
+donc pour ce faire on effectue une modification via JDBC ainsi que par JPA via merge et flush ce qui a pour effet d'envoyer l'erreur testée vu que l'on modifie la même donnée de 2 endroits différents 
+au même moment. Ceci est visible grâce à @Version qui nous permet de savoir si une modification à été effectué en fonction de sa valeur.
 
 

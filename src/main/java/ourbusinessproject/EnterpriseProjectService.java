@@ -15,19 +15,23 @@ public class EnterpriseProjectService {
     @PersistenceContext
     private EntityManager entityManager;
 
-    public Project saveProjectForEnterprise(Project project, Enterprise enterprise) {
-        saveEnterprise(enterprise);
-        project.setEnterprise(enterprise);
-        enterprise.addProject(project);
-        entityManager.persist(project);
+    public Project saveProjectForEnterprise(Project project, Enterprise enterprise) {    	
+    	if(project.getEnterprise() != null) {
+    		Enterprise enterpriseProjectDeleted = project.getEnterprise();
+    		enterpriseProjectDeleted.deleteProject(project);    		
+    	}
+    	Enterprise tmpEnterprise = saveEnterprise(enterprise);
+        project.setEnterprise(tmpEnterprise);    
+        Project newProject = entityManager.merge(project);
+        tmpEnterprise.addProject(newProject);
         entityManager.flush();
-        return project;
+        return newProject;
     }
 
     public Enterprise saveEnterprise(Enterprise enterprise) {
-        entityManager.persist(enterprise);
+        Enterprise newEnterprise = entityManager.merge(enterprise);
         entityManager.flush();
-        return enterprise;
+        return newEnterprise;
     }
 
     public Project findProjectById(Long id) {

@@ -7,6 +7,9 @@ import javax.validation.constraints.Size;
 @Entity
 public class Project {
 
+	@Version
+    private Long version;
+	
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
@@ -56,4 +59,12 @@ public class Project {
     public void setEnterprise(Enterprise enterprise) {
         this.enterprise = enterprise;
     }
+
+	public Long getVersion() {
+		return version;
+	}
+
+	public void setVersion(Long version) {
+		this.version = version;
+	}
 }

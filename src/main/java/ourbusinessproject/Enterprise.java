@@ -84,5 +84,12 @@ public class Enterprise {
         }
         projects.add(project);
     }
-
+    
+    public void deleteProject(Project project) {
+    	 if (projects != null) {
+    		 if(projects.contains(project)) {
+    			 projects.remove(project);
+    		 }             
+         }
+    }
 }
